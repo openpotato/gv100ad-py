@@ -6,6 +6,9 @@
 from enum import Enum
 
 class MunicipalityType(Enum):
+    """
+    Municipality type (Gemeindekennzeichen)
+    """
     NONE = 0
     MARKT = 60
     KREISFREIE_STADT = 61

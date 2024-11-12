@@ -6,10 +6,16 @@
 from gv100ad.entities.base_record import BaseRecord
 
 class GovernmentRegion(BaseRecord):
+    """
+    A government region (Regierungsbezirk) from GV100AD
+    """
+    
     def __init__(self, line):
         """
         Initializes a new instance of the GovernmentRegion class.
-        :param line: A text row with Satzart 20.
+
+        Args:
+            line (str): A text row with Satzart 20.
         """
         super().__init__(line)
         
