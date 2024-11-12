@@ -15,6 +15,7 @@ class GV100ADReader:
     A reader for GV100AD files (Gemeindeverzeichnis) provided by Destatis. 
     GV100AD files are UTF-8 encoded.
     """
+    
     def __init__(self, text_reader):
         """
         Initializes a new instance of the GV100ADReader class for the specified stream.

@@ -6,6 +6,9 @@
 from enum import Enum
 
 class DistrictType(Enum):
+    """
+    District type (Kreiskennzeichen)
+    """
     NONE = 0
     KREISFREIE_STADT = 41
     STADTKREIS = 42

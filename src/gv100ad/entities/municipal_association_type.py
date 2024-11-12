@@ -6,6 +6,9 @@
 from enum import Enum
 
 class MunicipalAssociationType(Enum):
+    """
+    Municipal association type (Gemeindeverbandskennzeichen) 
+    """
     NONE = 0
     VERBANDSFREIE_GEMEINDE = 50
     AMT = 51

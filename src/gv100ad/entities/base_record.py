@@ -6,6 +6,10 @@
 from datetime import datetime
 
 class BaseRecord:
+    """
+    Base class of a GV100AD record
+    """
+    
     def __init__(self, line):
         """
         Initializes a new instance of the BaseRecord class.

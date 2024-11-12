@@ -7,6 +7,10 @@ from gv100ad.entities.base_record import BaseRecord
 from gv100ad.entities.municipal_association_type import MunicipalAssociationType
 
 class MunicipalAssociation(BaseRecord):
+    """
+    A municipal association (Gemeindeverband) from GV100AD
+    """
+    
     def __init__(self, line):
         """
         Initializes a new instance of the MunicipalAssociation class.

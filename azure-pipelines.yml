@@ -10,8 +10,6 @@ stages:
 - stage: Test  
   jobs:
   - job: 
-    pool:
-      vmImage: 'windows-2022'
     strategy:
       matrix:
         Python38:

@@ -7,6 +7,10 @@ from gv100ad.entities.base_record import BaseRecord
 from gv100ad.entities.municipality_type import MunicipalityType
 
 class Municipality(BaseRecord):
+    """
+    A municipality (Gemeinde) from GV100AD
+    """
+    
     def __init__(self, line):
         """
         Initializes a new instance of the Municipality class.

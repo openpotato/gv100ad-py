@@ -7,6 +7,10 @@ from gv100ad.entities.base_record import BaseRecord
 from gv100ad.entities.district_type import DistrictType
 
 class District(BaseRecord):
+    """
+    A district (Kreis) from GV100AD
+    """
+    
     def __init__(self, line):
         """
         Initializes a new instance of the District class.
