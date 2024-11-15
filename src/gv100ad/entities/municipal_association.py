@@ -9,8 +9,19 @@ from gv100ad.entities.municipal_association_type import MunicipalAssociationType
 class MunicipalAssociation(BaseRecord):
     """
     A municipal association (Gemeindeverband) from GV100AD
+
+    Attributes:
+        regional_code (str): Regionalschlüssel (EF3)
+        association (str): Gemeindeverband (EF4)
+        administrative_headquarters (str): Verwaltungssitz des Gemeindeverbandes (EF6)
+        type (MunicipalAssociationType): Kennzeichen (EF7)
     """
     
+    regional_code: str
+    association: str
+    administrative_headquarters: str
+    type: MunicipalAssociationType
+
     def __init__(self, line):
         """
         Initializes a new instance of the MunicipalAssociation class.

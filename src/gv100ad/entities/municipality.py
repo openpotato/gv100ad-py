@@ -9,8 +9,37 @@ from gv100ad.entities.municipality_type import MunicipalityType
 class Municipality(BaseRecord):
     """
     A municipality (Gemeinde) from GV100AD
+
+    Attributes:
+        regional_code (str): Regionalschlüssel (EF3)
+        association (str): Gemeindeverband (EF4)
+        type (MunicipalityType): Kennzeichen (EF7)
+        area (int): Area in hectares (EF8)
+        inhabitants (int): Total population (EF9)
+        inhabitants_male (int): Male population (EF10)
+        postal_code (str): Postalcode (if there are multiple postcodes, it's the postalcode of the Verwaltungssitz) (EF12U1)
+        multiple_postal_codes (bool): Multiple postcodes available? (EF12U2)
+        tax_office_district (str): Finanzamtsbezirk (EF14)
+        higher_regional_court_district (str): Oberlandesgerichtsbezirk (EF15U1)
+        regional_court_district (str): Landgerichtsbezirk (EF15U2)
+        local_court_district (str): Amtsgerichtsbezirk (EF15U3)
+        employment_agency_district (str): Arbeitsagenturbezirk (EF16)
     """
     
+    regional_code: str
+    association: str
+    type: MunicipalityType
+    area: int
+    inhabitants: int
+    inhabitants_male: int
+    postal_code: str
+    multiple_postal_codes: bool
+    tax_office_district: str
+    higher_regional_court_district: str
+    regional_court_district: str
+    local_court_district: str
+    employment_agency_district: str
+
     def __init__(self, line):
         """
         Initializes a new instance of the Municipality class.
