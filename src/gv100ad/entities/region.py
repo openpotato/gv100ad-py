@@ -8,8 +8,15 @@ from gv100ad.entities.base_record import BaseRecord
 class Region(BaseRecord):
     """
     A region (Region) from GV100AD
+
+    Attributes:
+        regional_code (str): Regionalschlüssel (EF3)
+        administrative_headquarters (str): Verwaltungssitz der Region (EF6)
     """
     
+    regional_code: str
+    administrative_headquarters: str
+
     def __init__(self, line):
         """
         Initializes a new instance of the Region class.

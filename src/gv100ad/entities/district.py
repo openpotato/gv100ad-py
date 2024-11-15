@@ -9,8 +9,17 @@ from gv100ad.entities.district_type import DistrictType
 class District(BaseRecord):
     """
     A district (Kreis) from GV100AD
+
+    Attributes:
+        regional_code (str): Regionalschlüssel (EF3)
+        administrative_headquarters (str): Sitz der Kreisverwaltung (EF6)
+        type (DistrictType): Kennzeichen (EF7)
     """
     
+    regional_code: str
+    administrative_headquarters: str
+    type: DistrictType
+
     def __init__(self, line):
         """
         Initializes a new instance of the District class.

@@ -3,6 +3,8 @@
 # Licensed under the MIT License, Version 2.0. 
 ##
 
+from typing import Iterable, AsyncIterator
+from gv100ad.entities.base_record import BaseRecord
 from gv100ad.entities.district import District
 from gv100ad.entities.federale_state import FederalState
 from gv100ad.entities.government_region import GovernmentRegion
@@ -25,12 +27,12 @@ class GV100ADReader:
         """
         self._text_reader = text_reader
 
-    def read(self):
+    def read(self) -> Iterable[BaseRecord]:
         """
         Iterates over the internal GV100AD stream and returns GV100AD records.
 
         Returns:
-            generator: A generator of BaseRecord-based instances.        
+            An iterator of BaseRecord-based instances.        
         """
         while True:
             line = self._text_reader.readline()
@@ -38,12 +40,12 @@ class GV100ADReader:
                 break
             yield self._create_record(line.strip())
 
-    async def read_async(self):
+    async def read_async(self) -> AsyncIterator[BaseRecord]:
         """
         Asynchronously iterates over the internal GV100AD stream and returns GV100AD records.
 
         Returns:
-            async generator: An async generator of BaseRecord-based instances.
+            An async iterator of BaseRecord-based instances.
         """
         while True:
             line = await self._text_reader.readline()
@@ -51,7 +53,7 @@ class GV100ADReader:
                 break
             yield self._create_record(line.strip())
 
-    def _create_record(self, line):
+    def _create_record(self, line) -> BaseRecord:
         """
         Creates the appropriate BaseRecord-based instance by parsing the first 2 characters (Satzart)
         of the given text line.
@@ -60,7 +62,7 @@ class GV100ADReader:
             line (str): The text line to be parsed.
 
         Returns:
-            BaseRecord: A new BaseRecord-based instance.
+            A new BaseRecord-based instance.
         """
         if line.startswith('10'):
             return FederalState(line)

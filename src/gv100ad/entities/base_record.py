@@ -8,8 +8,15 @@ from datetime import datetime
 class BaseRecord:
     """
     Base class of a GV100AD record
+
+    Attributes:
+        timestamp (datetime): Gebietsstand (EF2)
+        name (str): Bezeichnung (EF5)
     """
     
+    timestamp: datetime
+    name: str
+
     def __init__(self, line):
         """
         Initializes a new instance of the BaseRecord class.
