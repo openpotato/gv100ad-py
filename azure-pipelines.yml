@@ -1,0 +1,85 @@
+pool:
+  vmImage: 'windows-2022'
+
+variables:
+- group: 'pypi-package-config'
+- group: 'github-config'
+
+stages:
+
+- stage: Test  
+  jobs:
+  - job: 
+    strategy:
+      matrix:
+        Python38:
+          python.version: '3.8'
+        Python312:
+          python.version: '3.12'
+        Python313:
+          python.version: '3.13'
+    steps:
+    - checkout: self
+      persistCredentials: true
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+    - task: PowerShell@2
+      displayName: 'Install dependencies'
+      inputs:
+        targetType: 'inline'
+        script: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-azurepipelines
+          pip install -e .
+        pwsh: true
+    - task: PowerShell@2
+      displayName: 'PyTest'
+      inputs:
+        targetType: 'inline'
+        script: |
+          python -m pytest tests/
+        pwsh: true
+
+- stage: Deploy  
+  jobs:
+  - job: 
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+    - task: PowerShell@2
+      displayName: 'Install dependencies'
+      inputs:
+        targetType: 'inline'
+        script: |
+          pip install -U setuptools wheel twine build  
+        pwsh: true
+    - task: PowerShell@2
+      displayName: 'Packaging'
+      inputs:
+        targetType: 'inline'
+        script: |
+          python -m build --sdist
+          python -m build --wheel
+        pwsh: true
+    - task: PowerShell@2
+      displayName: 'Push to GitHub'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+      inputs:
+        targetType: 'inline'
+        script: |
+          git remote add github https://$(PAT)@github.com/openpotato/gv100ad-py.git
+          git fetch github
+          git checkout .
+          git push github HEAD:main
+          git push --tags github HEAD:main
+        pwsh: true
+    - task: PowerShell@2
+      displayName: 'Upload'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+      inputs:
+        targetType: 'inline'
+        script: |
+          twine upload dist/* -u $(USERNAME) -p $(PASSWORD)
+        pwsh: true

@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gv100ad-py"
+description = "A reader for the official GV100AD (Gemeindeverzeichnis) file from Destatis"
+version = "0.1.4"
+requires-python = ">=3.8"
+dependencies = []
+readme = "README.md"
+authors = [
+    {name = "STÜBER SYSTEMS GmbH", email = "opensource@stueber.de"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+keywords = [
+    "gv100ad",
+    "Gemeindeverzeichnis"
+]
+
+[project.urls]
+Repository = "https://github.com/openpotato/gv100ad-py.git"
+Issues = "https://github.com/openpotato/gv100ad-py/issues"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
