@@ -5,18 +5,18 @@
 
 A Python library for parsing GV100AD files (Gemeindeverzeichnis) provided by [Destatis](https://www.destatis.de/DE/Themen/Laender-Regionen/Regionales/Gemeindeverzeichnis/_inhalt.html). 
 
-+ Supports Python 3.8+
++ Supports Python 3.10+
 + Supports all GV100AD record types:
   + Federal state (Bundesland, Satzart 10)
   + Government region (Regierungsbezirk, Satzart 20)
   + Region (Region, Satzart 30)
   + District (Kreis, Satzart 40)
-  + Municipality (Gemeinde, Satzart 50)
-  + Municipal association (Gemeindeverbund, Satzart 60)
-
+  + Municipal association (Gemeindeverband, Satzart 50)
+  + Municipality (Gemeinde, Satzart 60)
+  
 ## Installation
 
-**gv100ad-py** is available on [PiPy](https://pypi.org/), and installation via [pip](https://pip.pypa.io/) is the recommended way to install:
+**gv100ad-py** is available on [PyPI](https://pypi.org/), and installation via [pip](https://pip.pypa.io/) is the recommended way to install:
 
 ```
 pip install gv100ad-py

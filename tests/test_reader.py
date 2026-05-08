@@ -4,12 +4,22 @@
 ##
 
 import pytest
+import asyncio
 from datetime import datetime
 from io import StringIO
 from gv100ad.entities.district_type import DistrictType
 from gv100ad.entities.municipal_association_type import MunicipalAssociationType
 from gv100ad.entities.municipality_type import MunicipalityType
 from gv100ad.reader import GV100ADReader
+
+
+class AsyncStringReader:
+    def __init__(self, text: str):
+        self._lines = iter(text.splitlines(keepends=True))
+
+    async def readline(self):
+        return next(self._lines, "")
+
 
 def test_district():
     text_line = "402022013108221       Heidelberg, Stadtkreis                            Heidelberg                                        42                                                                                                "
@@ -28,6 +38,7 @@ def test_district():
     with pytest.raises(StopIteration):
         enumerator.__next__()
 
+
 def test_federal_state():
     text_line = "102022013101          Schleswig-Holstein                                Kiel                                                                                                                                                "
     str_stream = StringIO(text_line)
@@ -44,6 +55,7 @@ def test_federal_state():
     with pytest.raises(StopIteration):
          enumerator.__next__()
 
+
 def test_government_region():
     text_line = "2020220131051         Reg.-Bez. Düsseldorf                              Düsseldorf                                                                                                                                          "
     str_stream = StringIO(text_line)
@@ -59,6 +71,7 @@ def test_government_region():
 
     with pytest.raises(StopIteration):
         enumerator.__next__()
+
 
 def test_municipal_association():
     text_line = "502022013108221   0000Heidelberg, Stadt                                                                                   50                                                                                                "
@@ -77,6 +90,7 @@ def test_municipal_association():
 
     with pytest.raises(StopIteration):
         enumerator.__next__()
+
 
 def test_municipality():
     text_line = "6020220131082260135001Eberbach, Stadt                                                                                     63    000000081150000001426700000006914    69412*****  2840130262405277                           "
@@ -102,6 +116,7 @@ def test_municipality():
     with pytest.raises(StopIteration):
         enumerator.__next__()
 
+
 def test_region():
     text_line = "30202201310822        Region Rhein-Neckar                               Mannheim                                                                                                                                            "
     str_stream = StringIO(text_line)
@@ -117,3 +132,49 @@ def test_region():
 
     with pytest.raises(StopIteration):
         enumerator.__next__()
+
+
+def test_municipality_raises_for_invalid_postal_code_marker():
+    text_line = "6020220131082260135001Eberbach, Stadt                                                                                     63    000000081150000001426700000006914abcde  2840130262405277                           "
+    gv_reader = GV100ADReader(StringIO(text_line))
+
+    with pytest.raises(ValueError, match="Invalid postal code marker"):
+        next(gv_reader.read())
+
+
+def test_read_async_with_sync_string_reader():
+    text_line = "102022013101          Schleswig-Holstein                                Kiel                                                                                                                                                \n"
+    gv_reader = GV100ADReader(StringIO(text_line))
+
+    async def collect_records():
+        return [record async for record in gv_reader.read_async()]
+
+    records = asyncio.run(collect_records())
+
+    assert len(records) == 1
+    assert records[0].regional_code == "01"
+    assert records[0].name == "Schleswig-Holstein"
+
+
+def test_read_async_with_async_reader():
+    text_line = "2020220131051         Reg.-Bez. Düsseldorf                              Düsseldorf                                                                                                                                          \n"
+    gv_reader = GV100ADReader(AsyncStringReader(text_line))
+
+    async def collect_records():
+        return [record async for record in gv_reader.read_async()]
+
+    records = asyncio.run(collect_records())
+
+    assert len(records) == 1
+    assert records[0].regional_code == "051"
+    assert records[0].administrative_headquarters == "Düsseldorf"
+
+
+def test_read_skips_blank_lines():
+    text = "\n\r\n102022013101          Schleswig-Holstein                                Kiel                                                                                                                                                \n"
+    gv_reader = GV100ADReader(StringIO(text))
+
+    records = list(gv_reader.read())
+
+    assert len(records) == 1
+    assert records[0].regional_code == "01"

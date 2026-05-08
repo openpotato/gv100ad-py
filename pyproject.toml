@@ -5,10 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gv100ad-py"
 description = "A reader for the official GV100AD (Gemeindeverzeichnis) file from Destatis"
-version = "0.1.5"
+version = "0.2.0"
 readme = {file = "README.md", content-type = "text/markdown"}
 license = {file = "LICENSE"}
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = []
 authors = [
     {name = "STÜBER SYSTEMS GmbH", email = "opensource@stueber.de"}
@@ -20,8 +20,6 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",

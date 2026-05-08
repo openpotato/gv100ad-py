@@ -3,18 +3,18 @@
 # Licensed under the MIT License, Version 2.0. 
 ##
 
-from datetime import datetime
+from datetime import date, datetime
 
 class BaseRecord:
     """
     Base class of a GV100AD record
 
     Attributes:
-        timestamp (datetime): Gebietsstand (EF2)
+        timestamp (date): Gebietsstand (EF2)
         name (str): Bezeichnung (EF5)
     """
     
-    timestamp: datetime
+    timestamp: date
     name: str
 
     def __init__(self, line):

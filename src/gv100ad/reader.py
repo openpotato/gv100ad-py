@@ -3,6 +3,7 @@
 # Licensed under the MIT License, Version 2.0. 
 ##
 
+import inspect
 from typing import Iterable, AsyncIterator
 from gv100ad.entities.base_record import BaseRecord
 from gv100ad.entities.district import District
@@ -38,7 +39,10 @@ class GV100ADReader:
             line = self._text_reader.readline()
             if not line:
                 break
-            yield self._create_record(line.strip())
+            line = line.rstrip("\r\n")
+            if not line.strip():
+                continue
+            yield self._create_record(line)
 
     async def read_async(self) -> AsyncIterator[BaseRecord]:
         """
@@ -48,10 +52,15 @@ class GV100ADReader:
             An async iterator of BaseRecord-based instances.
         """
         while True:
-            line = await self._text_reader.readline()
+            line = self._text_reader.readline()
+            if inspect.isawaitable(line):
+                line = await line
             if not line:
                 break
-            yield self._create_record(line.strip())
+            line = line.rstrip("\r\n")
+            if not line.strip():
+                continue
+            yield self._create_record(line)
 
     def _create_record(self, line) -> BaseRecord:
         """

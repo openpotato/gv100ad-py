@@ -17,7 +17,7 @@ class Municipality(BaseRecord):
         area (int): Area in hectares (EF8)
         inhabitants (int): Total population (EF9)
         inhabitants_male (int): Male population (EF10)
-        postal_code (str): Postalcode (if there are multiple postcodes, it's the postalcode of the Verwaltungssitz) (EF12U1)
+        postal_code (str): Postal code (if there are multiple postal codes, this is the postal code of the Verwaltungssitz) (EF12U1)
         multiple_postal_codes (bool): Multiple postcodes available? (EF12U2)
         tax_office_district (str): Finanzamtsbezirk (EF14)
         higher_regional_court_district (str): Oberlandesgerichtsbezirk (EF15U1)
@@ -56,7 +56,13 @@ class Municipality(BaseRecord):
         self.inhabitants = int(line[139:150].strip())
         self.inhabitants_male = int(line[150:161].strip())
         self.postal_code = line[165:170].strip()
-        self.multiple_postal_codes = bool(line[170:175].strip())
+        postal_code_marker = line[170:175]
+        if postal_code_marker == "*****":
+            self.multiple_postal_codes = True
+        elif not postal_code_marker.strip():
+            self.multiple_postal_codes = False
+        else:
+            raise ValueError(f"Invalid postal code marker: {postal_code_marker!r}")
         self.tax_office_district = line[177:181].strip()
         self.higher_regional_court_district = line[181:182].strip()
         self.regional_court_district = line[182:183].strip()
